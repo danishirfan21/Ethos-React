@@ -82,11 +82,6 @@ export const Home = ({ onAddToCart }) => {
             <div className="stars">★★★★★</div>
             <span
               className="review-count"
-              onClick={() =>
-                alert(
-                  'In a production site, this would navigate to customer reviews.'
-                )
-              }
             >
               127 reviews
             </span>
