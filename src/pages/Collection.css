@@ -126,9 +126,9 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
   font-weight: 400;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   transition: transform 0.3s var(--ease-out);
-  display: inline-block;
+  display: block;
 }
 
 .product-card:hover .product-name {
@@ -138,6 +138,7 @@
 .product-price {
   font-size: 0.95rem;
   color: var(--text-main);
+  display: block;
 }
 
 @media (max-width: 1024px) {
