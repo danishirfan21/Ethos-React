@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Collection.css';
 
-export const Collection = () => {
+export const Collection = ({ onAddToCart }) => {
   const [activeFilter, setActiveFilter] = useState('All');
 
   const products = [
@@ -64,6 +64,19 @@ export const Collection = () => {
       ? products
       : products.filter((p) => p.category.includes(activeFilter));
 
+  const handleQuickAdd = (e, product) => {
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Stop event from bubbling up
+
+    const item = {
+      name: product.name,
+      finish: 'Matte Black', // Default finish
+      price: product.price,
+      id: Date.now() + Math.random(), // More unique ID
+    };
+    onAddToCart([item]);
+  };
+
   return (
     <main>
       <section className="collection-hero">
@@ -88,8 +101,8 @@ export const Collection = () => {
 
       <div className="product-grid">
         {filteredProducts.map((product, index) => {
-          const ProductWrapper = product.link ? Link : 'a';
-          const linkProps = product.link ? { to: product.link } : { href: '#' };
+          const ProductWrapper = product.link ? Link : 'div';
+          const linkProps = product.link ? { to: product.link } : {};
 
           return (
             <ProductWrapper
@@ -100,10 +113,20 @@ export const Collection = () => {
             >
               <div className="product-image">
                 <img src={product.image} alt={product.name} />
+                <button
+                  className="quick-add-btn"
+                  onClick={(e) => handleQuickAdd(e, product)}
+                >
+                  Add to Cart
+                </button>
               </div>
-              <span className="product-category">{product.category}</span>
-              <h2 className="product-name">{product.name}</h2>
-              <span className="product-price">${product.price.toFixed(2)}</span>
+              <div className="product-info">
+                <span className="product-category">{product.category}</span>
+                <h2 className="product-name">{product.name}</h2>
+                <span className="product-price">
+                  ${product.price.toFixed(2)}
+                </span>
+              </div>
             </ProductWrapper>
           );
         })}

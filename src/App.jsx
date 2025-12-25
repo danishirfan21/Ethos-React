@@ -40,7 +40,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home onAddToCart={handleAddToCart} />} />
-        <Route path="/collection" element={<Collection />} />
+        <Route
+          path="/collection"
+          element={<Collection onAddToCart={handleAddToCart} />}
+        />
         <Route path="/process" element={<Process />} />
       </Routes>
     </Router>
