@@ -76,9 +76,30 @@ body.cart-active .cart-header {
   flex-grow: 1; 
   border-top: 1px solid var(--border); 
   padding-top: 2rem;
+  padding-right: 1rem; /* Add padding for scrollbar space */
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.4s var(--ease-out) 0.25s;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar styling */
+.cart-items::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cart-items::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cart-items::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+.cart-items::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 body.cart-active .cart-items {
