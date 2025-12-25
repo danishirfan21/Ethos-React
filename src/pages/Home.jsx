@@ -5,7 +5,7 @@ import './Home.css';
 export const Home = ({ onAddToCart }) => {
   const [selectedFinish, setSelectedFinish] = useState('Matte Black');
   const [quantity, setQuantity] = useState(1);
-  const [buttonState, setButtonState] = useState('idle'); // idle, loading, success
+  const [buttonState, setButtonState] = useState('idle');
   const [activeSection, setActiveSection] = useState('description');
 
   const philosophyRef = useIntersectionObserver({ threshold: 0.2 });
@@ -26,11 +26,8 @@ export const Home = ({ onAddToCart }) => {
 
   const handleAddToCart = async () => {
     setButtonState('loading');
-
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 600));
 
-    // Add items to cart
     const items = Array(quantity)
       .fill(null)
       .map((_, i) => ({
@@ -41,11 +38,7 @@ export const Home = ({ onAddToCart }) => {
       }));
 
     onAddToCart(items);
-
-    // Show success state
     setButtonState('success');
-
-    // Reset after delay
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setButtonState('idle');
     setQuantity(1);
@@ -57,7 +50,8 @@ export const Home = ({ onAddToCart }) => {
 
   return (
     <main>
-      <div className="product-grid">
+      <div className="hero-grid">
+        {/* LEFT COLUMN: Gallery */}
         <section className="gallery-scroll">
           <div className="img-container">
             <img
@@ -79,6 +73,7 @@ export const Home = ({ onAddToCart }) => {
           </div>
         </section>
 
+        {/* RIGHT COLUMN: Product Details */}
         <section className="details-pane">
           <span className="breadcrumb">Brewing / Manual Pour Over</span>
 

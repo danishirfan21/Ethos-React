@@ -1,7 +1,9 @@
 /* --- Main Layout --- */
-main { padding-top: 80px; }
+main { 
+  padding-top: 80px; 
+}
 
-.product-grid {
+.hero-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   min-height: calc(100vh - 80px);
@@ -18,6 +20,7 @@ main { padding-top: 80px; }
 .img-container {
   background: #f4f4f4;
   width: 100%;
+  min-height: 600px;
   overflow: hidden;
   position: relative;
   opacity: 0;
@@ -137,7 +140,12 @@ h1 {
   display: block; 
 }
 
-.finish-grid { display: flex; gap: 15px; margin-bottom: 2rem; }
+.finish-grid { 
+  display: flex; 
+  gap: 15px; 
+  margin-bottom: 2rem; 
+}
+
 .swatch-btn {
   width: 45px; 
   height: 45px; 
@@ -149,24 +157,29 @@ h1 {
   background: none;
   transition: all 0.3s var(--ease-out);
 }
+
 .swatch-btn:hover { 
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
+
 .swatch-btn:active {
   transform: translateY(0);
 }
+
 .swatch-btn.active { 
   border-color: var(--text-main);
   border-width: 2px;
   padding: 2px;
 }
+
 .inner-circle { 
   width: 100%; 
   height: 100%; 
   border-radius: 50%;
   transition: transform 0.3s var(--ease-out);
 }
+
 .swatch-btn:hover .inner-circle {
   transform: scale(0.95);
 }
@@ -557,10 +570,16 @@ h1 {
 }
 
 @media (max-width: 1024px) {
-  .product-grid { grid-template-columns: 1fr; }
+  .hero-grid { 
+    grid-template-columns: 1fr; 
+  }
+  
   .details-pane { 
     border-left: none; 
     padding: 3rem 5%; 
   }
-  .trust-badges { grid-template-columns: 1fr; }
+  
+  .trust-badges { 
+    grid-template-columns: 1fr; 
+  }
 }
