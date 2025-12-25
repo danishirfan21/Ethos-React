@@ -23,9 +23,9 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
     }
   }, [isOpen]);
 
-  // Group items by finish for display
+  // Group items by BOTH name AND finish for display
   const groupedItems = items.reduce((acc, item) => {
-    const key = item.finish;
+    const key = `${item.name}-${item.finish}`; // Changed: group by name AND finish
     if (!acc[key]) {
       acc[key] = { ...item, quantity: 0, ids: [] };
     }
@@ -36,9 +36,9 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
 
   const total = items.reduce((sum, item) => sum + item.price, 0);
 
-  const handleRemove = (finish) => {
-    const group = groupedItems[finish];
-    // Remove all items with this finish
+  const handleRemove = (groupKey) => {
+    const group = groupedItems[groupKey];
+    // Remove all items with this group key
     group.ids.forEach((id) => onRemoveItem(id));
   };
 
@@ -58,13 +58,12 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
               Your collection is empty.
             </p>
           ) : (
-            Object.values(groupedItems).map((item, index) => (
-              <div className="cart-item" key={index}>
+            Object.entries(groupedItems).map(([key, item], index) => (
+              <div className="cart-item" key={key}>
                 <div
                   className="item-thumb"
                   style={{
-                    background:
-                      "url('https://images.unsplash.com/photo-1565845103399-89ff0425d093?auto=format&fit=crop&q=80&w=200') center/cover",
+                    background: `url('${item.image}') center/cover`,
                   }}
                 ></div>
                 <div className="item-details">
@@ -72,7 +71,7 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
                     <h4>{item.name}</h4>
                     <button
                       className="remove-btn"
-                      onClick={() => handleRemove(item.finish)}
+                      onClick={() => handleRemove(key)}
                       aria-label="Remove item"
                     >
                       ×

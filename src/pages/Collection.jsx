@@ -65,15 +65,17 @@ export const Collection = ({ onAddToCart }) => {
       : products.filter((p) => p.category.includes(activeFilter));
 
   const handleQuickAdd = (e, product) => {
-    e.preventDefault(); // Prevent navigation
-    e.stopPropagation(); // Stop event from bubbling up
+    e.preventDefault();
+    e.stopPropagation();
 
     const item = {
       name: product.name,
-      finish: 'Matte Black', // Default finish
+      finish: 'Matte Black',
       price: product.price,
-      id: Date.now() + Math.random(), // More unique ID
+      image: product.image,
+      id: Date.now() + Math.random(),
     };
+
     onAddToCart([item]);
   };
 
@@ -100,36 +102,46 @@ export const Collection = ({ onAddToCart }) => {
       </div>
 
       <div className="product-grid">
-        {filteredProducts.map((product, index) => {
-          const ProductWrapper = product.link ? Link : 'div';
-          const linkProps = product.link ? { to: product.link } : {};
-
-          return (
-            <ProductWrapper
-              key={product.id}
-              className="product-card"
-              style={{ animationDelay: `${index * 0.1}s` }}
-              {...linkProps}
-            >
-              <div className="product-image">
+        {filteredProducts.map((product, index) => (
+          <div
+            key={product.id}
+            className="product-card"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <div className="product-image">
+              {product.link ? (
+                <Link to={product.link}>
+                  <img src={product.image} alt={product.name} />
+                </Link>
+              ) : (
                 <img src={product.image} alt={product.name} />
-                <button
-                  className="quick-add-btn"
-                  onClick={(e) => handleQuickAdd(e, product)}
+              )}
+              <button
+                className="quick-add-btn"
+                onClick={(e) => handleQuickAdd(e, product)}
+              >
+                Add to Cart
+              </button>
+            </div>
+            <div className="product-info">
+              {product.link ? (
+                <Link
+                  to={product.link}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                  Add to Cart
-                </button>
-              </div>
-              <div className="product-info">
-                <span className="product-category">{product.category}</span>
-                <h2 className="product-name">{product.name}</h2>
-                <span className="product-price">
-                  ${product.price.toFixed(2)}
-                </span>
-              </div>
-            </ProductWrapper>
-          );
-        })}
+                  <span className="product-category">{product.category}</span>
+                  <h2 className="product-name">{product.name}</h2>
+                </Link>
+              ) : (
+                <>
+                  <span className="product-category">{product.category}</span>
+                  <h2 className="product-name">{product.name}</h2>
+                </>
+              )}
+              <span className="product-price">${product.price.toFixed(2)}</span>
+            </div>
+          </div>
+        ))}
       </div>
     </main>
   );
