@@ -3,7 +3,11 @@ import { NavLink } from 'react-router-dom';
 export const Nav = ({ cartCount, onCartClick }) => {
   return (
     <nav>
-      <NavLink to="/" className="logo">
+      <NavLink
+        to="/"
+        className="logo"
+        style={{ color: 'inherit', textDecoration: 'none' }}
+      >
         ETHOS
       </NavLink>
       <div className="nav-links">
