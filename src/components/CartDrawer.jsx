@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import './CartDrawer.css';
 
-export const CartDrawer = ({ isOpen, onClose, items }) => {
+export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
   // Close cart on escape key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -27,13 +27,20 @@ export const CartDrawer = ({ isOpen, onClose, items }) => {
   const groupedItems = items.reduce((acc, item) => {
     const key = item.finish;
     if (!acc[key]) {
-      acc[key] = { ...item, quantity: 0 };
+      acc[key] = { ...item, quantity: 0, ids: [] };
     }
     acc[key].quantity++;
+    acc[key].ids.push(item.id);
     return acc;
   }, {});
 
   const total = items.reduce((sum, item) => sum + item.price, 0);
+
+  const handleRemove = (finish) => {
+    const group = groupedItems[finish];
+    // Remove all items with this finish
+    group.ids.forEach((id) => onRemoveItem(id));
+  };
 
   return (
     <>
@@ -57,11 +64,20 @@ export const CartDrawer = ({ isOpen, onClose, items }) => {
                   className="item-thumb"
                   style={{
                     background:
-                      "url('https://images.unsplash.com/photo-1544190891-ad8975bb952d?auto=format&fit=crop&q=80&w=100') center/cover",
+                      "url('https://images.unsplash.com/photo-1565845103399-89ff0425d093?auto=format&fit=crop&q=80&w=200') center/cover",
                   }}
                 ></div>
                 <div className="item-details">
-                  <h4>{item.name}</h4>
+                  <div className="item-header">
+                    <h4>{item.name}</h4>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemove(item.finish)}
+                      aria-label="Remove item"
+                    >
+                      ×
+                    </button>
+                  </div>
                   <p
                     style={{
                       fontSize: '0.7rem',

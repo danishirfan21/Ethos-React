@@ -19,6 +19,10 @@ function App() {
     }, 200);
   };
 
+  const handleRemoveItem = (itemId) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== itemId));
+  };
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -27,7 +31,12 @@ function App() {
     <Router>
       <Nav cartCount={cartItems.length} onCartClick={toggleCart} />
 
-      <CartDrawer isOpen={isCartOpen} onClose={toggleCart} items={cartItems} />
+      <CartDrawer
+        isOpen={isCartOpen}
+        onClose={toggleCart}
+        items={cartItems}
+        onRemoveItem={handleRemoveItem}
+      />
 
       <Routes>
         <Route path="/" element={<Home onAddToCart={handleAddToCart} />} />
