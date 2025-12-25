@@ -33,6 +33,7 @@ export const Home = ({ onAddToCart }) => {
       .map((_, i) => ({
         name: 'Apex Dripper v2',
         finish: selectedFinish,
+        image: 'https://images.unsplash.com/photo-1565845103399-89ff0425d093?auto=format&fit=crop&q=80&w=800',
         price: 145.0,
         id: Date.now() + i,
       }));
