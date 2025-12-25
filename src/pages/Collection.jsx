@@ -70,7 +70,7 @@ export const Collection = ({ onAddToCart }) => {
 
     const item = {
       name: product.name,
-      finish: 'Matte Black',
+      finish: product.category,
       price: product.price,
       image: product.image,
       id: Date.now() + Math.random(),
