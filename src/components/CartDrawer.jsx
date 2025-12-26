@@ -33,9 +33,9 @@ export const CartDrawer = ({
     }
   }, [isOpen]);
 
-  // Group items by finish for display
+  // Group items by name + finish for display
   const groupedItems = items.reduce((acc, item) => {
-    const key = item.finish;
+    const key = `${item.name}-${item.finish}`;
     if (!acc[key]) {
       acc[key] = { ...item, quantity: 0 };
     }
@@ -51,9 +51,20 @@ export const CartDrawer = ({
       <div className="cart-drawer">
         <div className="cart-header">
           <span className="logo">Cart</span>
-          <span className="close-cart" onClick={onClose}>
-            &times;
-          </span>
+          <div className="header-actions">
+            {items.length > 0 && (
+              <button
+                className="clear-cart-btn"
+                onClick={onClearCart}
+                aria-label="Clear cart"
+              >
+                Clear All
+              </button>
+            )}
+            <span className="close-cart" onClick={onClose}>
+              &times;
+            </span>
+          </div>
         </div>
         <div className="cart-items" id="cart-items-list">
           {items.length === 0 ? (
@@ -61,8 +72,15 @@ export const CartDrawer = ({
               Your collection is empty.
             </p>
           ) : (
-            Object.values(groupedItems).map((item, index) => (
+            Object.entries(groupedItems).map(([groupKey, item], index) => (
               <div className="cart-item" key={index}>
+                <button
+                  className="remove-item-btn"
+                  onClick={() => onRemoveItem(groupKey)}
+                  aria-label="Remove item"
+                >
+                  ×
+                </button>
                 <div
                   className="item-thumb"
                   style={{
