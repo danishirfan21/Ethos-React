@@ -1,0 +1,147 @@
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.success-modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding: 3rem 2rem;
+  text-align: center;
+  animation: successPopup 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes successPopup {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-icon {
+  margin: 0 auto 1.5rem;
+  animation: iconBounce 0.6s ease 0.2s;
+}
+
+@keyframes iconBounce {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.success-icon svg {
+  display: block;
+}
+
+.success-modal h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 0.75rem 0;
+}
+
+.success-modal p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+.success-details {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.detail-item:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.detail-value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.success-button {
+  width: 100%;
+  padding: 1rem;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.success-button:hover {
+  background: #333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.success-button:active {
+  transform: translateY(0);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .success-modal {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .success-modal h2 {
+    font-size: 1.5rem;
+  }
+
+  .success-modal p {
+    font-size: 0.9375rem;
+  }
+
+  .detail-label,
+  .detail-value {
+    font-size: 0.875rem;
+  }
+}

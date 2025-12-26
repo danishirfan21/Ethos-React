@@ -1,7 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './CartDrawer.css';
+import { CheckoutModal } from './CheckoutModal';
+import { SuccessModal } from './SuccessModal';
 
-export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
+export const CartDrawer = ({
+  isOpen,
+  onClose,
+  items,
+  onRemoveItem,
+  onClearCart,
+}) => {
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   // Close cart on escape key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -23,24 +33,17 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
     }
   }, [isOpen]);
 
-  // Group items by BOTH name AND finish for display
+  // Group items by finish for display
   const groupedItems = items.reduce((acc, item) => {
-    const key = `${item.name}-${item.finish}`; // Changed: group by name AND finish
+    const key = item.finish;
     if (!acc[key]) {
-      acc[key] = { ...item, quantity: 0, ids: [] };
+      acc[key] = { ...item, quantity: 0 };
     }
     acc[key].quantity++;
-    acc[key].ids.push(item.id);
     return acc;
   }, {});
 
   const total = items.reduce((sum, item) => sum + item.price, 0);
-
-  const handleRemove = (groupKey) => {
-    const group = groupedItems[groupKey];
-    // Remove all items with this group key
-    group.ids.forEach((id) => onRemoveItem(id));
-  };
 
   return (
     <>
@@ -58,8 +61,8 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
               Your collection is empty.
             </p>
           ) : (
-            Object.entries(groupedItems).map(([key, item], index) => (
-              <div className="cart-item" key={key}>
+            Object.values(groupedItems).map((item, index) => (
+              <div className="cart-item" key={index}>
                 <div
                   className="item-thumb"
                   style={{
@@ -67,16 +70,7 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
                   }}
                 ></div>
                 <div className="item-details">
-                  <div className="item-header">
-                    <h4>{item.name}</h4>
-                    <button
-                      className="remove-btn"
-                      onClick={() => handleRemove(key)}
-                      aria-label="Remove item"
-                    >
-                      ×
-                    </button>
-                  </div>
+                  <h4>{item.name}</h4>
                   <p
                     style={{
                       fontSize: '0.7rem',
@@ -102,12 +96,33 @@ export const CartDrawer = ({ isOpen, onClose, items, onRemoveItem }) => {
           </div>
           <button
             className="btn-primary"
-            onClick={() => alert('Proceeding to Secure Checkout')}
+            onClick={() => setIsCheckoutOpen(true)}
           >
             Checkout
           </button>
         </div>
       </div>
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        total={total}
+        onSuccess={() => {
+          setIsCheckoutOpen(false);
+          setIsSuccessOpen(true);
+        }}
+      />
+
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={isSuccessOpen}
+        onClose={() => {
+          setIsSuccessOpen(false);
+          onClose(); // Close cart drawer
+          onClearCart(); // Clear the cart
+        }}
+      />
     </>
   );
 };

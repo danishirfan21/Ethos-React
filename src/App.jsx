@@ -19,8 +19,17 @@ function App() {
     }, 200);
   };
 
-  const handleRemoveItem = (itemId) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== itemId));
+  const handleRemoveItem = (groupKey) => {
+    setCartItems((prev) =>
+      prev.filter((item) => {
+        const itemKey = `${item.name}-${item.finish}`;
+        return itemKey !== groupKey;
+      })
+    );
+  };
+
+  const handleClearCart = () => {
+    setCartItems([]);
   };
 
   const toggleCart = () => {
@@ -36,6 +45,7 @@ function App() {
         onClose={toggleCart}
         items={cartItems}
         onRemoveItem={handleRemoveItem}
+        onClearCart={handleClearCart}
       />
 
       <Routes>
