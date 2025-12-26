@@ -4,6 +4,8 @@ import './Collection.css';
 
 export const Collection = ({ onAddToCart }) => {
   const [activeFilter, setActiveFilter] = useState('All');
+  const [quantityModal, setQuantityModal] = useState(null); // Stores selected product
+  const [modalQuantity, setModalQuantity] = useState(1);
 
   const products = [
     {
@@ -64,19 +66,39 @@ export const Collection = ({ onAddToCart }) => {
       ? products
       : products.filter((p) => p.category.includes(activeFilter));
 
-  const handleQuickAdd = (e, product) => {
+  const openQuantityModal = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
+    setQuantityModal(product);
+    setModalQuantity(1);
+  };
 
-    const item = {
-      name: product.name,
-      finish: product.category,
-      price: product.price,
-      image: product.image,
-      id: Date.now() + Math.random(),
-    };
+  const closeModal = () => {
+    setQuantityModal(null);
+    setModalQuantity(1);
+  };
 
-    onAddToCart([item]);
+  const handleAddToCart = () => {
+    const items = Array(modalQuantity)
+      .fill(null)
+      .map((_, i) => ({
+        name: quantityModal.name,
+        finish: quantityModal.category,
+        price: quantityModal.price,
+        image: quantityModal.image,
+        id: Date.now() + i,
+      }));
+
+    onAddToCart(items);
+    closeModal();
+  };
+
+  const incrementQty = () => {
+    if (modalQuantity < 10) setModalQuantity(modalQuantity + 1);
+  };
+
+  const decrementQty = () => {
+    if (modalQuantity > 1) setModalQuantity(modalQuantity - 1);
   };
 
   return (
@@ -102,47 +124,85 @@ export const Collection = ({ onAddToCart }) => {
       </div>
 
       <div className="product-grid">
-        {filteredProducts.map((product, index) => (
-          <div
-            key={product.id}
-            className="product-card"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <div className="product-image">
-              {product.link ? (
-                <Link to={product.link}>
-                  <img src={product.image} alt={product.name} />
-                </Link>
-              ) : (
+        {filteredProducts.map((product, index) => {
+          const ProductWrapper = product.link ? Link : 'a';
+          const linkProps = product.link ? { to: product.link } : { href: '#' };
+
+          return (
+            <ProductWrapper
+              key={product.id}
+              className="product-card"
+              style={{ animationDelay: `${index * 0.1}s` }}
+              {...linkProps}
+            >
+              <div className="product-image">
                 <img src={product.image} alt={product.name} />
-              )}
-              <button
-                className="quick-add-btn"
-                onClick={(e) => handleQuickAdd(e, product)}
-              >
-                Add to Cart
-              </button>
-            </div>
-            <div className="product-info">
-              {product.link ? (
-                <Link
-                  to={product.link}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
+                <button
+                  className="quick-add-btn"
+                  onClick={(e) => openQuantityModal(e, product)}
                 >
-                  <span className="product-category">{product.category}</span>
-                  <h2 className="product-name">{product.name}</h2>
-                </Link>
-              ) : (
-                <>
-                  <span className="product-category">{product.category}</span>
-                  <h2 className="product-name">{product.name}</h2>
-                </>
-              )}
+                  Add to Cart
+                </button>
+              </div>
+              <span className="product-category">{product.category}</span>
+              <h2 className="product-name">{product.name}</h2>
               <span className="product-price">${product.price.toFixed(2)}</span>
-            </div>
-          </div>
-        ))}
+            </ProductWrapper>
+          );
+        })}
       </div>
+
+      {/* Quantity Modal */}
+      {quantityModal && (
+        <div className="quantity-modal-overlay" onClick={closeModal}>
+          <div className="quantity-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>
+              ×
+            </button>
+
+            <div className="modal-product-info">
+              <div
+                className="modal-product-image"
+                style={{ backgroundImage: `url(${quantityModal.image})` }}
+              ></div>
+              <div className="modal-product-details">
+                <span className="modal-product-category">
+                  {quantityModal.category}
+                </span>
+                <h3 className="modal-product-name">{quantityModal.name}</h3>
+                <span className="modal-product-price">
+                  ${quantityModal.price.toFixed(2)}
+                </span>
+              </div>
+            </div>
+
+            <div className="modal-quantity-section">
+              <label className="modal-label">Quantity</label>
+              <div className="modal-quantity-controls">
+                <button
+                  className="modal-qty-btn"
+                  onClick={decrementQty}
+                  disabled={modalQuantity <= 1}
+                >
+                  <span>−</span>
+                </button>
+                <div className="modal-qty-display">{modalQuantity}</div>
+                <button
+                  className="modal-qty-btn"
+                  onClick={incrementQty}
+                  disabled={modalQuantity >= 10}
+                >
+                  <span>+</span>
+                </button>
+              </div>
+            </div>
+
+            <button className="modal-add-btn" onClick={handleAddToCart}>
+              Add to Cart • ${(quantityModal.price * modalQuantity).toFixed(2)}
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 };
