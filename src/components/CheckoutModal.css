@@ -34,6 +34,30 @@
   animation: slideUp 0.3s ease;
 }
 
+/* Custom scrollbar for checkout modal */
+.checkout-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.checkout-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.checkout-modal::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.checkout-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Firefox scrollbar */
+.checkout-modal {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(20px);
