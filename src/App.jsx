@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Nav } from './components/Nav';
 import { CartDrawer } from './components/CartDrawer';
+import { ScrollToTop } from './components/ScrollToTop';
 import { Home } from './pages/Home';
 import { Collection } from './pages/Collection';
 import { Process } from './pages/Process';
@@ -38,6 +39,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Nav cartCount={cartItems.length} onCartClick={toggleCart} />
 
       <CartDrawer
