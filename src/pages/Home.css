@@ -577,9 +577,22 @@ h1 {
   .details-pane { 
     border-left: none; 
     padding: 3rem 5%; 
+    text-align: center;
   }
   
+  .rating-summary, .finish-grid, .quantity-selector {
+    justify-content: center;
+  }
+
   .trust-badges { 
     grid-template-columns: 1fr; 
+  }
+
+  .philosophy {
+    padding: 6rem 5%;
+  }
+
+  .philosophy h2 {
+    font-size: 2rem;
   }
 }
