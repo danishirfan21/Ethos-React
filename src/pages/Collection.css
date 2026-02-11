@@ -166,6 +166,7 @@
   
   .product-card {
     border-right: none;
+    text-align: center;
   }
   
   .filter-bar {
@@ -177,6 +178,7 @@
     font-size: 2.5rem;
   }
 }
+
 
 /* Quick Add Button */
 .product-image {
